@@ -1,0 +1,47 @@
+[rowsQY, colsQY] = size(quantY);
+[rowsQCr, colsQCr] = size(quantCr);
+[rowsQCb, colsQCb] = size(quantCb);
+
+for i = 1:8:rowsQY
+    for j = 1:8:colsQY
+        block = quantY(i:i+7, j:j+7);
+        disp(block);
+        ZZY = zigzag(block);
+        disp(ZZY);
+        encode(ZZY);
+        disp(encode(ZZY));
+    end
+end
+
+for i = 1:8:rowsQCb
+    for j = 1:8:colsQCb
+        block = quantCb(i:i+7, j:j+7);
+        ZZCb = zigzag(block);
+        encode(ZZCb);
+    end
+end
+
+for i = 1:8:rowsQCr
+    for j = 1:8:colsQCr
+        block = quantCr(i:i+7, j:j+7);
+        ZZCr = zigzag(block);
+        encode(ZZCr);
+    end
+end
+
+function [coding, dict] = simpleHuffman(matrix)
+%zigzagMatrix = zigzag(matrix);
+zigzagMatrix = reshape(matrix, 1, []);
+symbols = unique(zigzagMatrix);
+counts = hist(zigzagMatrix, symbols);
+p = double(counts) ./ sum(counts);
+dict = huffmandict(symbols, p);
+coding = huffmanenco(zigzagMatrix, dict);
+end
+
+
+function decoding = simpleDecHuffman(code, dict, rows, cols)
+decoding = huffmandeco(code, dict);
+decoding = reshape(decoding, rows, cols);
+%decoding = invzigzag(matrix);
+end

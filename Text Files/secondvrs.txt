@@ -1,0 +1,42 @@
+%-----------
+%Now we need to encode our matices. In this sense, we need to recall that
+%DC and AC components are encoded in a slightly different way. We would
+%implement the coding procedure as we've described in the theory part,
+%applying an Huffman encoding on a Run Length. In order to do so we need to
+%create the division in categories and differentate for AC and DC. We also need
+%to implement the zig-zag scan procedure; this can be process in two ways:
+%one is create a sort of "ordering" matrix in which we insert the zig-zag
+%ordered elements, whereas the second consists in developing manually the
+%scan using indeces. We would implement the second one.
+%-----------
+[rowsQY, colsQY] = size(quantY);
+[rowsQCr, colsQCr] = size(quantCr);
+[rowsQCb, colsQCb] = size(quantCb);
+
+for i = 1:8:rowsQY
+    for j = 1:8:colsQY
+        block = quantY(i:i+7, j:j+7);
+        ZZY = zigzag(block);
+%        funcEncoded(ZZY);
+    end
+end
+
+for i = 1:8:rowsQCb
+    for j = 1:8:colsQCb
+        block = quantCb(i:i+7, j:j+7);
+        ZZCb = zigzag(block);
+%        funcEncoded(ZZCb);
+    end
+end
+
+for i = 1:8:rowsQCr
+    for j = 1:8:colsQCr
+        block = quantCr(i:i+7, j:j+7);
+        ZZCr = zigzag(block);
+%        funcEncoded(ZZCr);
+    end
+end
+%-----------
+%InvZigZag
+%-----------
+

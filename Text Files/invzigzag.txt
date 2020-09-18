@@ -1,0 +1,91 @@
+function invzigzagScan = invzigzag(inputMatrix)
+[numRows, numCols] = size(inputMatrix);
+
+if (numRows ~= numCols)
+    error("The matrix must be square");
+    return;
+end
+
+zigzagSize = numRows*numCols;
+invzigzagScan = zeros(1, zigzagSize);
+invzigzagScan(1) = inputMatrix(numRows, numCols);
+
+curRow = numRows; 
+curCol = numCols - 1; 
+i = 2;
+
+%While we're not at the beginning of the matrix
+while ((curRow ~= 0) && (curCol ~= 0))
+    %For the lower triangle of the matrix:
+    %Rows: in the even positions you must go horizontally left, 
+    %in the odd position you must go diagonally right
+    %Cols: in the even position you must go diagonally left, while in the
+    %right one you must move up
+    if (curRow == numRows && mod(curRow + curCol, 2) == 0 && curCol ~= 1)
+        invzigzagScan(i) = inputMatrix(curRow, curCol);
+        curCol = curCol - 1;
+        i = i + 1;
+        
+    elseif (curRow == numRows && mod(curRow + curCol, 2) ~= 0 && curCol ~= 1)
+        invzigzagScan(i) = inputMatrix(curRow, curCol);
+        curRow = curRow - 1;
+        curCol = curCol + 1;
+        i = i + 1;
+        
+    elseif (curCol == numCols && mod(curRow + curCol, 2) ~= 0 && curRow ~= 1)
+        invzigzagScan(i) = inputMatrix(curRow, curCol);
+        curRow = curRow - 1;
+        i = i + 1;
+        
+    elseif (curCol == numCols && mod(curRow + curCol, 2) == 0 && curRow ~= 1)
+        invzigzagScan(i) = inputMatrix(curRow, curCol);
+        curRow = curRow + 1;
+        curCol = curCol - 1;
+        i = i + 1;
+    
+    elseif (curCol ~= 1 && curCol ~= numCols && curRow ~= 1 && curRow ~= numRows && mod(curRow + curCol, 2) == 0)
+        invzigzagScan(i) = inputMatrix(curRow, curCol);
+        curRow = curRow + 1;
+        curCol = curCol - 1;
+        i = i + 1;
+        
+    elseif (curCol ~= 1 && curCol ~= numCols && curRow ~= 1 && curRow ~= numRows && mod(curRow + curCol, 2) ~= 0)
+        invzigzagScan(i) = inputMatrix(curRow, curCol);
+        curRow = curRow - 1;
+        curCol = curCol + 1;
+        i = i + 1;
+        
+    %In the upper triangle, instead:
+    %Rows: in the odd one you must go left, whereas in the even one you
+    %must go diagonally
+    %Cols: in the even one you must move up, while in the odd one you must
+    %go diagonally
+    elseif (curCol == 1 && mod(curRow + curCol, 2) == 0)
+        invzigzagScan(i) = inputMatrix(curRow, curCol);
+        curRow = curRow - 1;
+        i = i + 1;
+        
+    elseif (curCol == 1 && mod(curRow + curCol, 2) ~= 0)
+        invzigzagScan(i) = inputMatrix(curRow, curCol);
+        curRow = curRow - 1;
+        curCol = curCol + 1;
+        i = i + 1;
+    
+    elseif (curRow == 1 && mod(curRow + curCol, 2) ~= 0)
+        invzigzagScan(i) = inputMatrix(curRow, curCol);
+        curCol = curCol - 1;
+        i = i + 1;
+        
+    elseif (curRow == 1 && mod(curRow + curCol, 2) == 0)
+        invzigzagScan(i) = inputMatrix(curRow, curCol);
+        curRow = curRow + 1;
+        curCol = curCol - 1;
+        i = i + 1;
+        
+    elseif (curRow == 1 && curCol == 1)
+        invzigzagScan(end) = matrixInput(1, 1);
+    end    
+end
+
+invzigzagScan = reshape(invzigzagScan, numRows, numCols);
+end

@@ -1,0 +1,52 @@
+function zigzagScan = zigzag(inputMatrix)
+[numRows, numCols] = size(inputMatrix);
+
+if (numRows ~= numCols)
+    error("The matrix must be square");
+    return;
+end
+
+zigzagScan = zeros(1, numRows*numCols);
+
+curRow = 1; 
+curCol = 1; 
+i = 1;
+
+%While we're not at the end of the matrix
+while (curRow < numRows) && (curCol < numCols)
+    %If we're in the first row in an odd column position, we need to shift to the
+    %right of one step (unless you're not at the end of the matrix)
+    if (curRow == 1 && mod(curRow + curCol, 2) == 0 && curCol ~= numCols)
+        zigzagScan(i) = inputMatrix(curRow, curCol);
+        curCol = curCol + 1;
+        i = i + 1;
+    %If we're in the last row (8-th) in an odd column position
+    elseif (curRow == numRows && mod(curRow + curCol, 2) ~= 0 && curCol ~= numCols)
+        zigzagScan(i) = inputMatrix(curRow, curCol);
+        curCol = curCol + 1;
+        i = i + 1;
+    %If we're in the first column in an odd row position
+    elseif (curCol == 1 && mod(curRow + curCol, 2) ~= 0 && curRow ~= numRows)
+        zigzagScan(i) = inputMatrix(curRow, curCol);
+        curRow = curRow + 1;
+        i = i + 1;
+    elseif (curCol == numCols && mod(curRow + curCol, 2) == 0 && curRow ~= numRows)
+        zigzagScan(i) = inputMatrix(curRow, curCol);
+        curRow = curRow + 1;
+        i = i + 1;
+    elseif (curCol == 1 && mod(curRow + curCol, 2) ~= 0 && curRow ~= numRows)
+        zigzagScan(i) = inputMatrix(curRow, curCol);
+        curRow = curRow + 1;
+        curCol = curCol - 1;
+        i = i + 1;
+    elseif (curRow ~= 1 && mod(curRow + curCol, 2) == 0 && curCol ~= numCols)
+        zigzagScan(i) = inputMatrix(curRow, curCol);
+        curRow = curRow - 1;
+        curCol = curCol + 1;
+        i = i + 1;
+    elseif (curRow == numRows && curCol == numCols)
+        zigzagScan(end) = matrixInput(end);
+        break
+    end    
+end		
+end
